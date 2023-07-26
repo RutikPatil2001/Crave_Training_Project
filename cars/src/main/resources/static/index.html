@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>Car Form</title>
+<style>
+        body {
+            background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.82), rgba(0, 0, 0, 0.8)), url('./carbg1.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            color: #A7EDE7;
+            margin-left: 534px;
+            margin-top: 80px;
+        }
+
+        form {
+            border: 8px solid;
+            padding: 50px 90px;
+            margin-bottom: 20px;
+            border-top-left-radius: 50px;
+            border-bottom-right-radius: 50px;
+            border: 10px solid rgba(83, 255, 249, 0.922);
+            background: none;
+            width: auto;
+            /* display: flex; */
+            margin-left: 330px;
+
+            /* background-color: black; */
+            width: 450px;
+
+
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #A7EDE7;
+            padding: 10px 0px;
+
+        }
+
+        form input[type="text"],
+        form input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            border: 4px solid #A7EDE7;
+            border-radius: 60px;
+            margin-bottom: 10px;
+            /* background: none; */
+        }
+
+        form input[type="submit"],
+        button {
+          margin-top: 30px;
+    margin-left: 145px;
+            padding: 12px 30px;
+            cursor: pointer;
+            color: #A7EDE7;
+            background: none;
+
+            border: 4px solid #A7EDE7;
+            border-top-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            padding: 12px 8px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #A7EDE7;
+            color: black; 
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+         tr:nth-child(odd) {
+            color: #f2f2f2;
+        }
+    </style>
+
+    
+
+    
+
+</head>
+
+<body>
+
+    <h1>Add a New Car</h1>
+
+    <form id="carForm" action="/api/cars" method="post">
+
+        <label for="carId">Car ID:</label>
+
+        <input type="number" id="carId" name="carId" required>
+
+ 
+
+        <label for="model">Model:</label>
+
+        <input type="text" id="model" name="model" required>
+
+ 
+
+        <label for="price">Price:</label>
+
+        <input type="number" id="price" name="price" required>
+
+ 
+
+        <label for="color">Color:</label>
+
+        <input type="text" id="colour" name="colour" required>
+
+ 
+
+        <input type="submit" value="Add Car">
+
+    </form>
+
+    
+
+    
+
+    <h1>Delete a Car</h1>
+
+    <form id="deleteForm" action="/api/cars" method="delete">
+
+        <label for="carIdToDelete">Enter Car ID to Delete:</label>
+
+        <input type="number" id="carIdToDelete" name="carIdToDelete" required>
+
+        <button id="deleteButton" type="button">Delete Car</button>
+
+    </form>
+
+    
+
+    <h1>Update a Car</h1>
+
+<form id="updateForm">
+
+    <label for="carIdToUpdate">Enter Car ID to Update:</label>
+
+    <input type="number" id="carIdToUpdate" name="carIdToUpdate" required>
+
+    <label for="updatedModel">New Model:</label>
+
+    <input type="text" id="updatedModel" name="updatedModel" required>
+
+    <label for="updatedPrice">New Price:</label>
+
+    <input type="number" id="updatedPrice" name="updatedPrice" required>
+
+    <label for="updatedColor">New Color:</label>
+
+    <input type="text" id="updatedColour" name="updatedColour" required>
+
+    <button id="updateButton" type="button">Update Car</button>
+
+</form>
+
+    
+
+    
+
+     <h1>All Cars Data</h1>
+
+    <table id="carTable">
+
+        <thead>
+
+            <tr>
+
+                <th>ID</th>
+
+                <th>Model</th>
+
+                <th>Price</th>
+
+                <th>Color</th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+                    
+
+       </tbody>
+
+    </table>
+
+
+ 
+
+<script>
+
+  document.getElementById("carForm").addEventListener("submit", function (event) {
+
+    event.preventDefault();
+
+    let carId = document.getElementById("carId").value;
+
+    let model = document.getElementById("model").value;
+
+    let price = document.getElementById("price").value;
+
+    let colour = document.getElementById("colour").value;
+
+ 
+
+    if (!carId || !model || !price || !colour) {
+
+      alert("Please fill all the fields.");
+
+      return;
+
+    }
+
+ 
+
+    let formData = {
+
+      carId: parseInt(carId),
+
+      model: model,
+
+      price: parseInt(price),
+
+      colour: colour,
+
+    };
+
+ 
+
+    let xhr = new XMLHttpRequest();
+
+    xhr.open("POST", "/api/cars", true);
+
+    xhr.setRequestHeader("Content-Type", "application/json");
+
+    xhr.onreadystatechange = function () {
+
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+
+        if (xhr.status === 200) {
+
+          alert("Car added successfully!");
+
+        } else {
+
+          alert("Failed to add car. Please try again later.");
+
+        }
+
+      }
+
+    };
+
+    xhr.send(JSON.stringify(formData));
+
+  });
+
+ 
+
+  document.getElementById("deleteButton").addEventListener("click", function (event) {
+
+    event.preventDefault();
+
+    let carIdToDelete = document.getElementById("carIdToDelete").value;
+
+ 
+
+    if (!carIdToDelete) {
+
+      alert("Please enter the Car ID to delete.");
+
+      return;
+
+    }
+
+ 
+
+    let xhr = new XMLHttpRequest();
+
+    xhr.open("DELETE", `/api/cars/${carIdToDelete}`, true);
+
+    xhr.onreadystatechange = function () {
+
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+
+        if (xhr.status === 200) {
+
+          alert("Car deleted successfully!");
+
+        } else {
+
+          alert("Failed to delete the car. Car ID may not exist or there was an error.");
+
+        }
+
+      }
+
+    };
+
+    xhr.send();
+
+  });
+
+ 
+
+  function fetchCarData() {
+
+    let xhr = new XMLHttpRequest();
+
+    xhr.open("GET", "/api/cars", true);
+
+    xhr.onreadystatechange = function () {
+
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+
+        if (xhr.status === 200) {
+
+          const data = JSON.parse(xhr.responseText);
+
+          const carTableBody = document.querySelector("#carTable tbody");
+
+          carTableBody.innerHTML = "";
+
+ 
+
+          data.forEach((car) => {
+
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+
+              <td>${car.carId}</td>
+
+              <td>${car.model}</td>
+
+              <td>${car.price}</td>
+
+              <td>${car.colour}</td>
+
+            `;
+
+            carTableBody.appendChild(row);
+
+          });
+
+        } else {
+
+          alert("Failed to fetch car data. Please try again later.");
+
+        }
+
+      }
+
+    };
+
+    xhr.send();
+
+  }
+
+ 
+
+  // Fetch car data on page load
+
+  fetchCarData();
+
+  
+
+  
+
+  
+
+  
+
+  document.getElementById("updateButton").addEventListener("click", function (event) {
+
+        event.preventDefault();
+
+        let carIdToUpdate = document.getElementById("carIdToUpdate").value;
+
+        let updatedModel = document.getElementById("updatedModel").value;
+
+        let updatedPrice = document.getElementById("updatedPrice").value;
+
+        let updatedColour = document.getElementById("updatedColour").value;
+
+ 
+
+        if (!carIdToUpdate || !updatedModel || !updatedPrice || !updatedColour) {
+
+            alert("Please fill all the fields.");
+
+            return;
+
+        }
+
+ 
+
+        let formData = {
+
+            model: updatedModel,
+
+            price: parseInt(updatedPrice),
+
+            colour: updatedColour,
+
+        };
+
+ 
+
+        let xhr = new XMLHttpRequest();
+
+        xhr.open("PUT", `/api/cars/${carIdToUpdate}`, true);
+
+        xhr.setRequestHeader("Content-Type", "application/json");
+
+        xhr.onreadystatechange = function () {
+
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+
+                if (xhr.status === 200) {
+
+                    alert("Car updated successfully!");
+
+                    // Fetch car data again to refresh the table
+
+                    fetchCarData();
+
+                } else if (xhr.status === 404) {
+
+                    alert("Car with the given ID not found.");
+
+                } else {
+
+                    alert("Failed to update the car. Please try again later.");
+
+                }
+
+            }
+
+        };
+
+        xhr.send(JSON.stringify(formData));
+
+    });
+
+</script>
+
+ 
+
+ 
+
+</body>
+
+</html>
